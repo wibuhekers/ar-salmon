@@ -1,31 +1,69 @@
-<a-scene
-  mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
-  embedded
-  vr-mode-ui="enabled: false"
-  device-orientation-permission-ui="enabled: false">
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Salmon AR</title>
 
-  <a-assets>
-    <a-asset-item id="salmon" src="salmon.glb"></a-asset-item>
-  </a-assets>
+  <!-- A-Frame -->
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 
-  <a-camera position="0 0 0"></a-camera>
+  <!-- MindAR Camera (tanpa tracking) -->
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-camera.prod.js"></script>
 
-  <!-- QR = MARKER -->
-  <a-entity mindar-image-target="targetIndex: 0">
+  <style>
+    body { margin: 0; overflow: hidden; }
+    .hint {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-family: sans-serif;
+      font-size: 14px;
+    }
+  </style>
+</head>
 
-    <a-gltf-model
-      src="#salmon"
-      scale="0.4 0.4 0.4"
-      animation="property: rotation; to: 0 360 0; loop: true; dur: 3000">
-    </a-gltf-model>
+<body>
+  <a-scene
+    mindar-camera
+    embedded
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false">
 
-    <a-text
-      value="Salmon kaya Omega-3"
-      position="0 0.5 0"
-      align="center"
-      color="#ffffff"
-      width="2">
-    </a-text>
+    <a-assets>
+      <a-asset-item id="salmon" src="salmon.glb"></a-asset-item>
+    </a-assets>
 
-  </a-entity>
-</a-scene>
+    <!-- Kamera -->
+    <a-camera position="0 0 0"></a-camera>
+
+    <!-- OBJEK AR LANGSUNG MUNCUL -->
+    <a-entity position="0 0 -2">
+
+      <a-gltf-model
+        src="#salmon"
+        scale="0.6 0.6 0.6"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000">
+      </a-gltf-model>
+
+      <a-text
+        value="Salmon kaya Omega-3\nBaik untuk otak bayi"
+        position="0 -0.8 0"
+        align="center"
+        color="#ffffff"
+        width="3">
+      </a-text>
+
+    </a-entity>
+
+  </a-scene>
+
+  <div class="hint">
+    Arahkan kamera ke sekitar Anda
+  </div>
+</body>
+</html>
