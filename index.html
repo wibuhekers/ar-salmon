@@ -1,35 +1,16 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8">
   <title>Salmon AR</title>
 
-  <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-
-  <!-- MindAR Camera (tanpa tracking) -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-camera.prod.js"></script>
-
-  <style>
-    body { margin: 0; overflow: hidden; }
-    .hint {
-      position: fixed;
-      bottom: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.6);
-      color: white;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-family: sans-serif;
-      font-size: 14px;
-    }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 </head>
 
-<body>
+<body style="margin:0; overflow:hidden;">
   <a-scene
-    mindar-camera
+    mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
     embedded
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
@@ -38,32 +19,27 @@
       <a-asset-item id="salmon" src="salmon.glb"></a-asset-item>
     </a-assets>
 
-    <!-- Kamera -->
     <a-camera position="0 0 0"></a-camera>
 
-    <!-- OBJEK AR LANGSUNG MUNCUL -->
-    <a-entity position="0 0 -2">
+    <!-- QR = TARGET -->
+    <a-entity mindar-image-target="targetIndex: 0">
 
       <a-gltf-model
         src="#salmon"
-        scale="0.6 0.6 0.6"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000">
+        position="0 0 0"
+        scale="0.4 0.4 0.4"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000">
       </a-gltf-model>
 
       <a-text
-        value="Salmon kaya Omega-3\nBaik untuk otak bayi"
-        position="0 -0.8 0"
+        value="Salmon kaya Omega-3 untuk otak bayi"
+        position="0 0.5 0"
         align="center"
         color="#ffffff"
-        width="3">
+        width="2">
       </a-text>
 
     </a-entity>
-
   </a-scene>
-
-  <div class="hint">
-    Arahkan kamera ke sekitar Anda
-  </div>
 </body>
 </html>
