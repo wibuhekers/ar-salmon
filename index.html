@@ -2,48 +2,42 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>AR Salmon Edukasi</title>
-
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-  <script src="https://unpkg.com/mind-ar@1.2.5/dist/mindar-image.prod.js"></script>
-
-  <style>
-    body { margin: 0; overflow: hidden; }
-  </style>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 </head>
 
-<body>
+<body style="margin:0; overflow:hidden;">
+  <a-scene
+    mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+    embedded>
 
-<a-scene
-  mindar-image="imageTargetSrc: targets.mind;"
-  vr-mode-ui="enabled: false"
-  device-orientation-permission-ui="enabled: false">
+    <a-assets>
+      <a-asset-item id="salmon" src="salmon.glb"></a-asset-item>
+    </a-assets>
 
-  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+    <a-camera position="0 0 0"></a-camera>
 
-  <!-- TARGET POSTER -->
-  <a-entity mindar-image-target="targetIndex: 0">
+    <a-entity mindar-image-target="targetIndex: 0">
+      <!-- 3D Salmon -->
+      <a-gltf-model
+        src="#salmon"
+        position="0 0 0"
+        scale="0.5 0.5 0.5"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 4000">
+      </a-gltf-model>
 
-    <!-- MODEL SALMON -->
-    <a-gltf-model
-      src="salmon.glb"
-      position="0 0 0"
-      scale="0.4 0.4 0.4"
-      rotation="0 180 0">
-    </a-gltf-model>
+      <!-- Text Manfaat -->
+      <a-text
+        value="Omega-3 baik untuk otak bayi"
+        position="0 0.5 0"
+        align="center"
+        color="#ffffff"
+        width="2">
+      </a-text>
+    </a-entity>
 
-    <!-- TEKS EDUKASI -->
-    <a-text
-      value="SALMON\nKaya Omega-3\nBaik untuk otak & jantung"
-      position="0 -0.6 0"
-      align="center"
-      color="#ffffff"
-      width="2">
-    </a-text>
-
-  </a-entity>
-
-</a-scene>
-
+  </a-scene>
 </body>
 </html>
