@@ -1,45 +1,31 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>Salmon AR</title>
+<a-scene
+  mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
+  embedded
+  vr-mode-ui="enabled: false"
+  device-orientation-permission-ui="enabled: false">
 
-  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-</head>
+  <a-assets>
+    <a-asset-item id="salmon" src="salmon.glb"></a-asset-item>
+  </a-assets>
 
-<body style="margin:0; overflow:hidden;">
-  <a-scene
-    mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
-    embedded
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false">
+  <a-camera position="0 0 0"></a-camera>
 
-    <a-assets>
-      <a-asset-item id="salmon" src="salmon.glb"></a-asset-item>
-    </a-assets>
+  <!-- QR = MARKER -->
+  <a-entity mindar-image-target="targetIndex: 0">
 
-    <a-camera position="0 0 0"></a-camera>
+    <a-gltf-model
+      src="#salmon"
+      scale="0.4 0.4 0.4"
+      animation="property: rotation; to: 0 360 0; loop: true; dur: 3000">
+    </a-gltf-model>
 
-    <!-- QR = TARGET -->
-    <a-entity mindar-image-target="targetIndex: 0">
+    <a-text
+      value="Salmon kaya Omega-3"
+      position="0 0.5 0"
+      align="center"
+      color="#ffffff"
+      width="2">
+    </a-text>
 
-      <a-gltf-model
-        src="#salmon"
-        position="0 0 0"
-        scale="0.4 0.4 0.4"
-        animation="property: rotation; to: 0 360 0; loop: true; dur: 3000">
-      </a-gltf-model>
-
-      <a-text
-        value="Salmon kaya Omega-3 untuk otak bayi"
-        position="0 0.5 0"
-        align="center"
-        color="#ffffff"
-        width="2">
-      </a-text>
-
-    </a-entity>
-  </a-scene>
-</body>
-</html>
+  </a-entity>
+</a-scene>
