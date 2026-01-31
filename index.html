@@ -4,8 +4,14 @@
   <meta charset="utf-8" />
   <title>Salmon Product Knowledge AR</title>
 
+  <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+
+  <!-- MindAR -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+  <!-- Animation Mixer (biar 3D gerak) -->
+  <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
 
   <style>
     html, body {
@@ -14,50 +20,48 @@
       height: 100%;
       overflow: hidden;
       font-family: Arial, sans-serif;
+      background: black;
     }
   </style>
 </head>
 
 <body>
- <a-scene
-  mindar-image="imageTargetSrc: targets.mind;"
-  vr-mode-ui="enabled: false"
-  device-orientation-permission-ui="enabled: false"
-  renderer="colorManagement: true; physicallyCorrectLights: true"
-  style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;"
->
+  <a-scene
+    mindar-image="imageTargetSrc: targets.mind;"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+    renderer="colorManagement: true; physicallyCorrectLights: true"
+    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;"
+  >
 
-    <!-- IMAGE TARGET -->
+    <!-- TARGET GAMBAR -->
     <a-entity mindar-image-target="targetIndex: 0">
 
-      <!-- PANEL BACKGROUND -->
-      <a-plane
-        position="0 0.25 0"
-        width="1.2"
-        height="0.6"
-        material="color: white; opacity: 0.92"
-      ></a-plane>
+      <!-- PNG PRODUCT KNOWLEDGE -->
+      <a-image
+        src="product-info.png"
+        position="0 0.35 0"
+        width="1.3"
+        height="0.7"
+        transparent="true"
+      ></a-image>
 
-      <!-- PRODUCT TEXT -->
-      <a-text
-        value="SALMON SEGAR\n\n• Tinggi Omega-3\n• Baik untuk bayi & dewasa\n• Protein tinggi\n• Mendukung otak & jantung"
-        position="-0.55 0.45 0.01"
-        width="2"
-        color="#000"
-      ></a-text>
-
-      <!-- 3D PLACEHOLDER -->
-     <a-gltf-model
-  src="salmon.glb"
-  scale="0.4 0.4 0.4"
-  position="0 -0.2 0"
-></a-gltf-model>
+      <!-- 3D SALMON (AUTO ANIMASI JIKA ADA) -->
+      <a-gltf-model
+        src="salmon.glb"
+        position="0 -0.25 0"
+        scale="0.45 0.45 0.45"
+        animation-mixer="loop: repeat"
+      ></a-gltf-model>
 
     </a-entity>
 
-    <a-camera></a-camera>
+    <!-- CAMERA -->
+    <a-camera
+      position="0 0 0"
+      look-controls="enabled: false"
+    ></a-camera>
+
   </a-scene>
 </body>
 </html>
-
-
