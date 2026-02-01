@@ -1,26 +1,43 @@
-<a-entity mindar-image-target="targetIndex: 0">
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>WebAR MindAR</title>
 
-  <!-- PANEL PRODUCT KNOWLEDGE -->
-  <a-plane
-    position="0 0.2 0"
-    width="1"
-    height="0.6"
-    material="color: white; opacity: 0.9"
-  ></a-plane>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-  <!-- TEXT -->
-  <a-text
-    value="SALMON SEGAR\n\n• Tinggi Omega-3\n• Baik untuk bayi & dewasa\n• Protein tinggi"
-    position="-0.45 0.35 0.01"
-    width="2"
-    color="#000"
-  ></a-text>
+    <style>
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+    </style>
+  </head>
 
-  <!-- 3D MODEL -->
-  <a-gltf-model
-    src="salmon.glb"
-    scale="0.4 0.4 0.4"
-    position="0 -0.2 0"
-  ></a-gltf-model>
+  <body>
+    <a-scene
+      mindar-image="imageTargetSrc: targets.mind;"
+      embedded
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
 
-</a-entity>
+      <!-- TARGET -->
+      <a-entity mindar-image-target="targetIndex: 0">
+
+        <!-- GANTI NANTI DENGAN MODEL 3D -->
+        <a-box
+          position="0 0 0"
+          material="color: red"
+          scale="0.3 0.3 0.3"
+        ></a-box>
+
+      </a-entity>
+
+      <a-camera></a-camera>
+    </a-scene>
+  </body>
+</html>
