@@ -112,4 +112,45 @@
 
     <!-- SALMON -->
     <a-gltf-model
-      sr
+      src="salmon.glb"
+      position="0 -0.45 0"
+      scale="1.9 1.9 1.9"
+      rotation="0 180 0"
+      animation-mixer
+
+      animation__float="
+        property: position;
+        dir: alternate;
+        dur: 4000;
+        easing: easeInOutSine;
+        loop: true;
+        to: 0 -0.42 0
+      "
+    ></a-gltf-model>
+
+  </a-entity>
+
+  <a-camera look-controls="enabled: false"></a-camera>
+</a-scene>
+
+<div class="hint">
+  📱 Scan produk untuk melihat informasi
+</div>
+
+<script>
+  const target = document.getElementById('target');
+  const loading = document.getElementById('loading');
+
+  target.addEventListener('targetFound', () => {
+    loading.classList.add('hidden');
+    target.setAttribute('visible', true);
+  });
+
+  target.addEventListener('targetLost', () => {
+    target.setAttribute('visible', false);
+    loading.classList.remove('hidden');
+  });
+</script>
+
+</body>
+</html>
