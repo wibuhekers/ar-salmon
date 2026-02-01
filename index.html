@@ -1,23 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AEON Premium Salmon AR</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
+
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #000; }
+        
+        /* UI Frame Scanner yang Elegan */
+        #ui-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 100; pointer-events: none;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        .scanner-frame {
+            width: 250px; height: 250px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 20px;
+            box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.5); /* Efek fokus */
+        }
+
+        .label {
+            margin-top: 20px; color: white; font-family: sans-serif;
+            background: rgba(0,0,0,0.8); padding: 8px 15px; border-radius: 20px;
+        }
+    </style>
 </head>
-<body style="margin:0; overflow:hidden;">
-    <a-scene mindar-image="imageTargetSrc: ./targets.mind; autoStart: true;" 
-             embedded vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+<body>
+
+    <div id="ui-container">
+        <div class="scanner-frame"></div>
+        <div class="label">📸 Arahkan ke Label Salmon AEON</div>
+    </div>
+
+    <a-scene 
+        mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; uiScanning: no;" 
+        embedded color-management="true" vr-mode-ui="enabled: false" 
+        device-orientation-permission-ui="enabled: false">
         
         <a-assets>
-            <a-asset-item id="salmon" src="salmon.glb"></a-asset-item>
+            <a-asset-item id="salmonModel" src="salmon.glb"></a-asset-item>
         </a-assets>
 
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
         <a-entity mindar-image-target="targetIndex: 0">
-            <a-gltf-model src="#salmon" scale="1 1 1" position="0 0 0.1"></a-gltf-model>
+            <a-gltf-model src="#salmonModel" rotation="0 90 0" position="0 0 0.1" scale="2 2 2"></a-gltf-model>
         </a-entity>
     </a-scene>
+
+    <script>
+        const ui = document.getElementById('ui-container');
+        const target = document.querySelector('[mindar-image-target]');
+
+        // Sembunyikan frame saat produk terdeteksi
+        target.addEventListener("targetFound", () => ui.style.opacity = "0");
+        target.addEventListener("targetLost", () => ui.style.opacity = "1");
+    </script>
 </body>
 </html>
