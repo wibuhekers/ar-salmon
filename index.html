@@ -2,17 +2,13 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live AR Product - Optimized</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Live AR Product - Fixed</title>
 
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
 
     <style>
-        :root {
-            --hint-bg: rgba(0, 0, 0, 0.6);
-        }
-
         body, html {
             margin: 0;
             padding: 0;
@@ -20,10 +16,10 @@
             height: 100%;
             overflow: hidden;
             background-color: #000;
-            font-family: sans-serif;
+            font-family: Arial, sans-serif;
         }
 
-        /* Video Background */
+        /* Video Background Fixed */
         #cam {
             position: fixed;
             top: 50%;
@@ -34,29 +30,32 @@
             height: auto;
             transform: translate(-50%, -50%);
             object-fit: cover;
-            z-index: -1; /* Berada di paling belakang */
+            z-index: -1;
         }
 
-        /* Overlay UI */
+        /* UI Overlay */
         #hint {
             position: fixed;
             bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--hint-bg);
-            padding: 12px 24px;
-            border-radius: 30px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 20px;
+            border-radius: 50px;
             color: white;
             z-index: 10;
-            pointer-events: none; /* Supaya tidak menghalangi klik ke AR */
+            text-align: center;
             font-size: 14px;
-            letter-spacing: 1px;
-            backdrop-filter: blur(4px);
+            pointer-events: none;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            white-space: nowrap;
         }
 
-        /* Menghilangkan border focus A-Frame */
+        /* Menghilangkan Canvas A-Frame agar tidak menutupi input */
         .a-canvas {
             position: fixed !important;
+            z-index: 2;
         }
     </style>
 </head>
@@ -74,50 +73,4 @@
         renderer="antialias: true; alpha: true; colorManagement: true;">
         
         <a-assets>
-            <a-asset-item id="productModel" src="salmon.glb"></a-asset-item>
-        </a-assets>
-
-        <a-light type="ambient" intensity="0.7"></a-light>
-        <a-light type="directional" position="1 2 1" intensity="0.8"></a-light>
-
-        <a-entity position="0 0 -3">
-            <a-gltf-model 
-                src="#productModel" 
-                scale="2 2 2"
-                animation-mixer
-                shadow="cast: true; receive: false">
-            </a-gltf-model>
-        </a-entity>
-
-        <a-camera look-controls="enabled: false" wasd-controls="enabled: false"></a-camera>
-    </a-scene>
-
-    <script>
-        /**
-         * Mengaktifkan Kamera Belakang
-         */
-        async function initCamera() {
-            const video = document.getElementById("cam");
-            
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { 
-                        facingMode: "environment",
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    },
-                    audio: false
-                });
-                video.srcObject = stream;
-            } catch (err) {
-                console.error("Gagal akses kamera:", err);
-                document.getElementById("hint").innerText = "❌ Izin kamera diperlukan.";
-            }
-        }
-
-        // Jalankan saat DOM siap
-        window.addEventListener('DOMContentLoaded', initCamera);
-    </script>
-
-</body>
-</html>
+            <a-asset-item id="productModel" src="salmon.glb"></
