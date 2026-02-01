@@ -4,13 +4,8 @@
   <meta charset="utf-8" />
   <title>Salmon Product Knowledge AR</title>
 
-  <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-
-  <!-- MindAR -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-
-  <!-- Animation mixer -->
   <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
 
   <style>
@@ -19,7 +14,18 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: transparent;
+      background: #000;
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 20px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-family: Arial;
+      font-size: 14px;
+      opacity: 0.8;
     }
   </style>
 </head>
@@ -29,34 +35,33 @@
     mindar-image="imageTargetSrc: targets.mind;"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
-    style="position: fixed; top:0; left:0; width:100%; height:100%;"
+    embedded
   >
 
-    <!-- TARGET GAMBAR -->
     <a-entity mindar-image-target="targetIndex: 0">
 
-      <!-- PNG PRODUCT INFO -->
       <a-image
         src="product-info.png"
-        position="0 0.35 0"
+        position="0 0.4 0"
         width="1.3"
         height="0.7"
         transparent="true"
       ></a-image>
 
-      <!-- 3D SALMON -->
       <a-gltf-model
         src="salmon.glb"
         position="0 -0.35 0"
-        scale="1.2 1.2 1.2"
-        animation-mixer="loop: repeat"
+        scale="1.5 1.5 1.5"
+        animation-mixer
       ></a-gltf-model>
 
     </a-entity>
 
-    <!-- CAMERA (JANGAN DIUBAH) -->
     <a-camera></a-camera>
-
   </a-scene>
+
+  <div class="hint">
+    📱 Buka di HP & izinkan kamera untuk melihat AR
+  </div>
 </body>
 </html>
