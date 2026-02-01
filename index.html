@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
   <meta charset="utf-8" />
   <title>Salmon Product Knowledge AR</title>
@@ -10,7 +10,7 @@
   <!-- MindAR -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-  <!-- Animation Mixer (biar 3D gerak) -->
+  <!-- Animation mixer -->
   <script src="https://cdn.jsdelivr.net/npm/aframe-extras@6.1.1/dist/aframe-extras.min.js"></script>
 
   <style>
@@ -19,8 +19,7 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      font-family: Arial, sans-serif;
-      background: black;
+      background: transparent;
     }
   </style>
 </head>
@@ -30,14 +29,13 @@
     mindar-image="imageTargetSrc: targets.mind;"
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
-    renderer="colorManagement: true; physicallyCorrectLights: true"
-    style="position: fixed; top: 0; left: 0; width: 100%; height: 100%;"
+    style="position: fixed; top:0; left:0; width:100%; height:100%;"
   >
 
     <!-- TARGET GAMBAR -->
     <a-entity mindar-image-target="targetIndex: 0">
 
-      <!-- PNG PRODUCT KNOWLEDGE -->
+      <!-- PNG PRODUCT INFO -->
       <a-image
         src="product-info.png"
         position="0 0.35 0"
@@ -46,25 +44,19 @@
         transparent="true"
       ></a-image>
 
-      <!-- 3D SALMON (AUTO ANIMASI JIKA ADA) -->
+      <!-- 3D SALMON -->
       <a-gltf-model
-  src="salmon.glb"
-  position="0 -0.35 0"
-  scale="1.2 1.2 1.2"
-  animation-mixer="loop: repeat"
-></a-gltf-model>
-
+        src="salmon.glb"
+        position="0 -0.35 0"
+        scale="1.2 1.2 1.2"
+        animation-mixer="loop: repeat"
+      ></a-gltf-model>
 
     </a-entity>
 
-    <!-- CAMERA -->
-    <a-camera
-      position="0 0 0"
-      look-controls="enabled: false"
-    ></a-camera>
+    <!-- CAMERA (JANGAN DIUBAH) -->
+    <a-camera></a-camera>
 
   </a-scene>
 </body>
 </html>
-
-
