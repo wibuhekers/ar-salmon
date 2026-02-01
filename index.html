@@ -2,74 +2,62 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>AR Product Knowledge</title>
+<title>Live AR Product</title>
 
 <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
 <style>
-html, body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: black;
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:black;
 }
 
-/* CAMERA LIVE */
-video {
-  position: fixed !important;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover;
-  z-index: 0;
+/* CAMERA */
+video{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:0;
 }
 
-#hint {
-  position: fixed;
-  bottom: 18px;
-  width: 100%;
-  text-align: center;
-  color: white;
-  font-size: 14px;
-  opacity: 0.9;
-  z-index: 10;
+/* AR LAYER */
+a-scene{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:2;
+  pointer-events:none;
+}
+
+#hint{
+  position:fixed;
+  bottom:20px;
+  width:100%;
+  text-align:center;
+  color:white;
+  z-index:3;
 }
 </style>
 </head>
 
 <body>
 
-<a-scene
-  id="scene"
-  embedded
-  vr-mode-ui="enabled: false"
-  device-orientation-permission-ui="enabled: false"
+<!-- LIVE CAMERA -->
+<video id="cam" autoplay muted playsinline></video>
 
-  mindar-image="
-    imageTargetSrc: targets.mind;
-    autoStart: false;
-  "
->
-
-  <a-entity
-    id="target"
-    mindar-image-target="targetIndex: 0"
-    visible="false"
-  >
-    <a-image
-      src="product-info.png"
-      position="0 0.5 0"
-      width="1.3"
-      height="0.7"
-      material="shader: flat; transparent: true"
-    ></a-image>
-
+<!-- AR OVERLAY -->
+<a-scene embedded vr-mode-ui="enabled:false">
+  <a-entity position="0 0 -3">
     <a-gltf-model
       src="salmon.glb"
-      position="0 -0.45 0"
       scale="2 2 2"
       animation-mixer
     ></a-gltf-model>
@@ -78,25 +66,16 @@ video {
   <a-camera look-controls="enabled:false"></a-camera>
 </a-scene>
 
-<div id="hint">
-  📷 Arahkan kamera ke produk
-</div>
+<div id="hint">📷 Arahkan kamera ke produk</div>
 
 <script>
-const scene = document.querySelector('#scene');
-const target = document.querySelector('#target');
+const video = document.getElementById("cam");
 
-scene.addEventListener('loaded', () => {
-  const system = scene.systems['mindar-image-system'];
-  system.start(); // 🔥 INI KUNCINYA
-});
-
-target.addEventListener('targetFound', () => {
-  target.setAttribute('visible', true);
-});
-
-target.addEventListener('targetLost', () => {
-  target.setAttribute('visible', false);
+navigator.mediaDevices.getUserMedia({
+  video: { facingMode: "environment" },
+  audio: false
+}).then(stream=>{
+  video.srcObject = stream;
 });
 </script>
 
