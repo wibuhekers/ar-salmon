@@ -1,82 +1,155 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<title>Live AR Product</title>
+  <meta charset="utf-8" />
+  <title>Salmon Product Knowledge AR</title>
 
-<script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <!-- CORE -->
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-<style>
-html,body{
-  margin:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:black;
-}
+  <style>
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background: #000;
+    }
 
-/* CAMERA */
-video{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  z-index:0;
-}
+    /* CAMERA VIDEO */
+    video {
+      position: fixed !important;
+      top: 0;
+      left: 0;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
+      z-index: 0;
+    }
 
-/* AR LAYER */
-a-scene{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  z-index:2;
-  pointer-events:none;
-}
+    /* LOADING OVERLAY */
+    #loading {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      transition: opacity 0.6s ease;
+    }
 
-#hint{
-  position:fixed;
-  bottom:20px;
-  width:100%;
-  text-align:center;
-  color:white;
-  z-index:3;
-}
-</style>
+    #loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .scan-box {
+      width: 180px;
+      height: 120px;
+      border: 2px solid rgba(255,255,255,0.7);
+      margin-top: 16px;
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 16px;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      font-size: 13px;
+      opacity: 0.8;
+      z-index: 10;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- LIVE CAMERA -->
-<video id="cam" autoplay muted playsinline></video>
+<!-- LOADING -->
+<div id="loading">
+  <div>📷 Arahkan kamera ke produk</div>
+  <div class="scan-box"></div>
+</div>
 
-<!-- AR OVERLAY -->
-<a-scene embedded vr-mode-ui="enabled:false">
-  <a-entity position="0 0 -3">
+<a-scene
+  embedded
+  vr-mode-ui="enabled: false"
+  device-orientation-permission-ui="enabled: false"
+
+  mindar-image="
+    imageTargetSrc: targets.mind;
+    smooth: true;
+    smoothCount: 18;
+    smoothTolerance: 0.01;
+    smoothThreshold: 5;
+    filterMinCF: 0.0008;
+    filterBeta: 5;
+  "
+
+  renderer="
+    antialias: true;
+    colorManagement: true;
+    physicallyCorrectLights: false;
+  "
+>
+
+  <!-- TARGET -->
+  <a-entity id="target" mindar-image-target="targetIndex: 0" visible="false">
+
+    <!-- INFO PANEL -->
+    <a-image
+      src="product-info.png"
+      position="0 0.5 0"
+      width="1.25"
+      height="0.7"
+      material="shader: flat; transparent: true"
+    ></a-image>
+
+    <!-- SALMON -->
     <a-gltf-model
       src="salmon.glb"
-      scale="2 2 2"
+      position="0 -0.45 0"
+      scale="1.9 1.9 1.9"
+      rotation="0 180 0"
       animation-mixer
+
+      animation__float="
+        property: position;
+        dir: alternate;
+        dur: 4000;
+        easing: easeInOutSine;
+        loop: true;
+        to: 0 -0.42 0
+      "
     ></a-gltf-model>
+
   </a-entity>
 
-  <a-camera look-controls="enabled:false"></a-camera>
+  <a-camera look-controls="enabled: false"></a-camera>
 </a-scene>
 
-<div id="hint">📷 Arahkan kamera ke produk</div>
+<div class="hint">
+  📱 Scan produk untuk melihat informasi
+</div>
 
 <script>
-const video = document.getElementById("cam");
+  const target = document.getElementById('target');
+  const loading = document.getElementById('loading');
 
-navigator.mediaDevices.getUserMedia({
-  video: { facingMode: "environment" },
-  audio: false
-}).then(stream=>{
-  video.srcObject = stream;
-});
+  target.addEventListener('targetFound', () => {
+    loading.classList.add('hidden');
+    target.setAttribute('visible', true);
+  });
+
+  target.addEventListener('targetLost', () => {
+    target.setAttribute('visible', false);
+    loading.classList.remove('hidden');
+  });
 </script>
 
 </body>
