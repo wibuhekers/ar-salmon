@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <title>Salmon Product Knowledge AR</title>
 
-  <!-- CORE -->
   <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
@@ -18,20 +17,15 @@
       font-family: Arial, sans-serif;
     }
 
-    #popup {
-      position: fixed;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.85);
-      color: #fff;
-      padding: 12px 16px;
-      border-radius: 10px;
-      font-size: 14px;
-      max-width: 85%;
-      text-align: center;
-      display: none;
-      z-index: 20;
+    /* PAKSA VIDEO CAMERA SELALU TAMPIL */
+    video {
+      position: fixed !important;
+      top: 0;
+      left: 0;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
+      z-index: 0;
     }
 
     .hint {
@@ -41,19 +35,13 @@
       text-align: center;
       color: #fff;
       font-size: 13px;
-      opacity: 0.75;
+      opacity: 0.8;
       z-index: 10;
     }
   </style>
 </head>
 
 <body>
-
-<div id="popup">
-  🐟 <b>Salmon Segar</b><br>
-  Tinggi Omega-3, protein tinggi,<br>
-  baik untuk otak & jantung.
-</div>
 
 <a-scene
   embedded
@@ -90,15 +78,13 @@
       animation="property: opacity; from: 0; to: 1; dur: 500"
     ></a-image>
 
-    <!-- SALMON 3D (TAP ENABLE) -->
+    <!-- SALMON 3D -->
     <a-gltf-model
-      id="salmon"
       src="salmon.glb"
       position="0 -0.45 0"
       scale="1.9 1.9 1.9"
       rotation="0 180 0"
       animation-mixer
-      class="clickable"
 
       animation__float="
         property: position;
@@ -114,24 +100,13 @@
 
   <a-camera
     look-controls="enabled: false"
-    cursor="rayOrigin: mouse"
-    raycaster="objects: .clickable"
   ></a-camera>
 
 </a-scene>
 
 <div class="hint">
-  📱 Arahkan kamera ke produk • Tap salmon untuk info
+  📱 Arahkan kamera ke produk
 </div>
-
-<script>
-  const salmon = document.getElementById('salmon');
-  const popup = document.getElementById('popup');
-
-  salmon.addEventListener('click', () => {
-    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-  });
-</script>
 
 </body>
 </html>
