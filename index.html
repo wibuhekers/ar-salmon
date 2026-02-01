@@ -18,6 +18,22 @@
       font-family: Arial, sans-serif;
     }
 
+    #popup {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      max-width: 85%;
+      text-align: center;
+      display: none;
+      z-index: 20;
+    }
+
     .hint {
       position: fixed;
       bottom: 16px;
@@ -26,12 +42,18 @@
       color: #fff;
       font-size: 13px;
       opacity: 0.75;
-      z-index: 2;
+      z-index: 10;
     }
   </style>
 </head>
 
 <body>
+
+<div id="popup">
+  🐟 <b>Salmon Segar</b><br>
+  Tinggi Omega-3, protein tinggi,<br>
+  baik untuk otak & jantung.
+</div>
 
 <a-scene
   embedded
@@ -41,50 +63,75 @@
   mindar-image="
     imageTargetSrc: targets.mind;
     smooth: true;
-    smoothCount: 10;
+    smoothCount: 15;
     smoothTolerance: 0.01;
     smoothThreshold: 5;
     filterMinCF: 0.001;
-    filterBeta: 10;
+    filterBeta: 6;
   "
-  renderer="colorManagement: true; physicallyCorrectLights: false"
+
+  renderer="
+    colorManagement: true;
+    antialias: true;
+    physicallyCorrectLights: false;
+  "
 >
 
-  <!-- TARGET -->
+  <!-- IMAGE TARGET -->
   <a-entity mindar-image-target="targetIndex: 0">
 
-    <!-- INFO PANEL (PNG) -->
+    <!-- INFO PANEL -->
     <a-image
       src="product-info.png"
-      position="0 0.45 0"
-      width="1.2"
-      height="0.65"
-      transparent="true"
-      material="shader: flat"
+      position="0 0.5 0"
+      width="1.25"
+      height="0.7"
+      material="shader: flat; transparent: true"
+      animation="property: opacity; from: 0; to: 1; dur: 500"
     ></a-image>
 
-    <!-- SALMON 3D -->
+    <!-- SALMON 3D (TAP ENABLE) -->
     <a-gltf-model
+      id="salmon"
       src="salmon.glb"
-      position="0 -0.4 0"
-      scale="1.8 1.8 1.8"
+      position="0 -0.45 0"
+      scale="1.9 1.9 1.9"
       rotation="0 180 0"
       animation-mixer
+      class="clickable"
+
+      animation__float="
+        property: position;
+        dir: alternate;
+        dur: 3500;
+        easing: easeInOutSine;
+        loop: true;
+        to: 0 -0.42 0
+      "
     ></a-gltf-model>
 
   </a-entity>
 
-  <!-- CAMERA -->
   <a-camera
-    position="0 0 0"
     look-controls="enabled: false"
+    cursor="rayOrigin: mouse"
+    raycaster="objects: .clickable"
   ></a-camera>
 
 </a-scene>
 
 <div class="hint">
-  📱 Arahkan kamera ke produk salmon
+  📱 Arahkan kamera ke produk • Tap salmon untuk info
 </div>
+
+<script>
+  const salmon = document.getElementById('salmon');
+  const popup = document.getElementById('popup');
+
+  salmon.addEventListener('click', () => {
+    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+  });
+</script>
 
 </body>
 </html>
