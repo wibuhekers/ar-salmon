@@ -1,123 +1,22 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retail Pro AR - Image Tracking</title>
-    
-    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v7.0.0/dist/aframe-extras.min.js"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Retail Scan AR</title>
     <style>
-        body { margin: 0; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
-
-        /* UI overlay saat produk terdeteksi */
-        #ui-overlay {
-            position: fixed;
-            bottom: -100%; /* Sembunyi di bawah */
-            left: 0; width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            border-radius: 25px 25px 0 0;
-            padding: 25px;
-            box-sizing: border-box;
-            transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 100;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
-
-        #ui-overlay.visible { bottom: 0; }
-
-        .badge {
-            background: #27ae60; color: white; padding: 4px 10px;
-            border-radius: 5px; font-size: 10px; font-weight: bold; text-transform: uppercase;
-        }
-
-        h2 { margin: 10px 0 5px 0; color: #2c3e50; font-size: 22px; }
-        p { color: #7f8c8d; font-size: 14px; margin-bottom: 20px; line-height: 1.5; }
-
-        .price-row { display: flex; justify-content: space-between; align-items: center; }
-        .price { font-size: 24px; font-weight: 800; color: #e74c3c; }
-        
-        .buy-btn {
-            background: #e74c3c; color: white; padding: 12px 25px;
-            border-radius: 12px; text-decoration: none; font-weight: bold;
-            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
-        }
-
-        /* Scanning effect */
-        #scanner-ui {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            border: 2px solid rgba(255,255,255,0.5);
-            box-sizing: border-box; pointer-events: none; z-index: 50;
-            display: flex; align-items: center; justify-content: center;
-        }
-        .scan-line {
-            width: 80%; height: 2px; background: #e74c3c;
-            position: absolute; animation: scan 2s infinite;
-        }
-        @keyframes scan { 0% { top: 20%; } 100% { top: 80%; } }
     </style>
 </head>
 <body>
-
-    <div id="scanner-ui">
-        <div class="scan-line"></div>
-        <p style="color: white; margin-top: 150px;">Scanning Product...</p>
-    </div>
-
-    <div id="ui-overlay">
-        <span class="badge">Premium Quality</span>
-        <h2>Norwegian Fresh Salmon</h2>
-        <p>Salmon Grade A+ diproses secara higienis, tinggi protein dan Omega-3. Cocok untuk sashimi atau grill.</p>
-        
-        <div class="price-row">
-            <div class="price">Rp 89.900 <small style="font-size: 12px; color: #999;">/ Pack</small></div>
-            <a href="#" class="buy-btn" onclick="alert('Ditambahkan!')">BELI SEKARANG</a>
-        </div>
-    </div>
-
-    <a-scene 
-        mindar-image="imageTargetSrc: targets.mind; maxTrack: 1" 
-        embedded color-management="true" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
-        
-        <a-assets>
-            <a-asset-item id="salmonModel" src="salmon.glb"></a-asset-item>
-        </a-assets>
-
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-        <a-entity id="target1" mindar-image-target="targetIndex: 0">
-            <a-gltf-model 
-                src="#salmonModel" 
-                rotation="0 90 0" 
-                position="0 0 0.2" 
-                scale="3 3 3"
-                animation-mixer
-                animation="property: rotation; to: 0 450 0; loop: true; dur: 8000; easing: easeInOutSine">
-            </a-gltf-model>
-        </a-entity>
-
-    </a-scene>
-
-    <script>
-        const ui = document.getElementById('ui-overlay');
-        const scanner = document.getElementById('scanner-ui');
-        const targetEntity = document.querySelector('#target1');
-
-        // Deteksi ketika gambar ditemukan (Found)
-        targetEntity.addEventListener("targetFound", event => {
-            console.log("Produk terdeteksi!");
-            ui.classList.add('visible');
-            scanner.style.display = 'none';
-        });
-
-        // Deteksi ketika gambar hilang dari kamera (Lost)
-        targetEntity.addEventListener("targetLost", event => {
-            console.log("Target hilang");
-            ui.classList.remove('visible');
-            scanner.style.display = 'flex';
-        });
-    </script>
+    <iframe 
+        src="https://mywebar.com/p/ikan-mas" 
+        allow="camera; microphone; accelerometer; magnetometer; gyroscope; vr;">
+    </iframe>
 </body>
 </html>
