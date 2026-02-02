@@ -1,81 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>AR Salmon Knowledge</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Salmon AR</title>
 
-  <!-- A-Frame -->
-  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <!-- A-Frame -->
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
 
-  <!-- MindAR -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <!-- MindAR -->
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: #000;
-    }
-  </style>
-
-  <!-- FREEZE POSITION (ANTI GOYANG) -->
-  <script>
-    AFRAME.registerComponent("freeze-on-detect", {
-      init() {
-        this.el.addEventListener("targetFound", () => {
-          this.el.object3D.matrixAutoUpdate = false;
-        });
-        this.el.addEventListener("targetLost", () => {
-          this.el.object3D.matrixAutoUpdate = true;
-        });
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: black;
       }
-    });
-  </script>
-</head>
+      a-scene {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
 
-<body>
-<a-scene
-  mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
-  renderer="colorManagement: true, physicallyCorrectLights"
-  vr-mode-ui="enabled: false"
-  device-orientation-permission-ui="enabled: true">
+  <body>
+    <a-scene
+      mindar-image="imageTargetSrc: targets.mind; stabilizationThreshold: 0.02;"
+      embedded
+      renderer="colorManagement: true; physicallyCorrectLights: true"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
 
-  <!-- ASSETS -->
-  <a-assets>
-    <img id="productInfo" src="product-info.png">
-    <a-asset-item id="salmonModel" src="salmon.glb"></a-asset-item>
-  </a-assets>
+      <!-- ASSETS -->
+      <a-assets>
+        <img id="productInfo" src="product-info.png" />
+        <a-asset-item id="salmonModel" src="salmon.glb"></a-asset-item>
+      </a-assets>
 
-  <!-- CAMERA -->
-  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <!-- CAMERA -->
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-  <!-- IMAGE TARGET -->
-  <a-entity mindar-image-target="targetIndex: 0" freeze-on-detect>
+      <!-- IMAGE TARGET -->
+      <a-entity mindar-image-target="targetIndex: 0">
 
-    <!-- 3D SALMON MODEL -->
-    <a-entity
-      gltf-model="#salmonModel"
-      position="0 0.05 0"
-      rotation="0 180 0"
-      scale="0.15 0.15 0.15">
-    </a-entity>
+        <!-- PRODUCT INFO IMAGE -->
+        <a-plane
+          src="#productInfo"
+          position="0 0 0"
+          rotation="-90 0 0"
+          width="1"
+          height="0.7"
+        ></a-plane>
 
-    <!-- PRODUCT INFO IMAGE -->
-   <a-plane
-  src="#productInfo"
-  position="0 -0.22 0.01"
-  width="3.1"
-  height="3.1"
-  material="transparent: true">
-</a-plane>
+        <!-- SALMON 3D MODEL -->
+        <a-gltf-model
+          src="#salmonModel"
+          position="0.25 -0.35 0.02"
+          rotation="-90 0 0"
+          scale="2.8 2.8 2.8"
+        ></a-gltf-model>
 
-
-  </a-entity>
-
-</a-scene>
-</body>
+      </a-entity>
+    </a-scene>
+  </body>
 </html>
-
-
-
-
