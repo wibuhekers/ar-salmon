@@ -1,7 +1,83 @@
-<div onclick="goAR()">Tap untuk Scan</div>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AEON Salmon AR - Live</title>
+    
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
 
-<script>
-function goAR(){
-  window.location.href = "https://mywebar.com/p/ikan-mas";
-}
-</script>
+    <style>
+        /* Mencegah tampilan hancur/terpotong */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+        
+        /* UI Scanner yang Elegan */
+        #ui-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1000; pointer-events: none;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        .scan-frame {
+            width: 260px; height: 260px;
+            border: 2px solid rgba(255,255,255,0.5);
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 0 0 5000px rgba(0, 0, 0, 0.4); /* Efek fokus gelap di pinggir */
+        }
+
+        .scan-frame::after {
+            content: "ARAHKAN KE LABEL SALMON";
+            position: absolute; bottom: -45px; width: 100%;
+            text-align: center; color: #fff; font-family: sans-serif;
+            font-size: 12px; font-weight: bold; letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ui-overlay">
+        <div class="scan-frame"></div>
+    </div>
+
+    <a-scene 
+        mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; uiScanning: no;" 
+        embedded color-management="true" vr-mode-ui="enabled: false" 
+        device-orientation-permission-ui="enabled: false">
+        
+        <a-assets>
+            <a-asset-item id="modelSalmon" src="salmon.glb"></a-asset-item>
+        </a-assets>
+
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+        <a-entity mindar-image-target="targetIndex: 0">
+            <a-gltf-model 
+                src="#modelSalmon" 
+                rotation="0 90 0" 
+                position="0 0 0.2" 
+                scale="4 4 4"
+                animation="property: rotation; to: 0 450 0; loop: true; dur: 10000; easing: linear">
+            </a-gltf-model>
+            
+            <a-light type="directional" position="1 2 1" intensity="1.2"></a-light>
+        </a-entity>
+
+    </a-scene>
+
+    <script>
+        const ui = document.getElementById('ui-overlay');
+        const target = document.querySelector('[mindar-image-target]');
+
+        // Sembunyikan panduan scan saat ikan salmon muncul
+        target.addEventListener("targetFound", () => {
+            ui.style.opacity = "0";
+            console.log("Salmon Detected!");
+        });
+
+        target.addEventListener("targetLost", () => {
+            ui.style.opacity = "1";
+        });
+    </script>
+</body>
+</html>
