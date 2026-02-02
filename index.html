@@ -2,69 +2,90 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Salmon AR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salmon AR Experience</title>
 
-    <!-- A-Frame -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
-
-    <!-- MindAR -->
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
     <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        background: black;
+      body { margin: 0; overflow: hidden; font-family: sans-serif; }
+      
+      /* UI Scanner - Muncul saat mencari poster */
+      #scanning-overlay {
+        position: absolute; left: 0; right: 0; top: 0; bottom: 0;
+        background: rgba(0,0,0,0.6);
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        color: white; z-index: 99; transition: opacity 0.5s;
       }
-      a-scene {
-        width: 100%;
-        height: 100%;
+      #scanning-overlay.hidden { opacity: 0; pointer-events: none; }
+      .scanner-frame {
+        width: 250px; height: 250px;
+        border: 4px solid #fff; border-radius: 20px;
+        margin-bottom: 20px; box-shadow: 0 0 20px rgba(255,255,255,0.5);
       }
     </style>
   </head>
 
- <body>
+  <body>
+    <div id="scanning-overlay">
+      <div class="scanner-frame"></div>
+      <p>Arahkan Kamera ke Poster Ikan</p>
+    </div>
+
     <a-scene
-      mindar-image="imageTargetSrc: targets.mind; stabilizationThreshold: 0.02;"
+      mindar-image="imageTargetSrc: targets.mind; filterMinCF:0.0001; filterBeta: 0.001;"
       embedded
       renderer="colorManagement: true; physicallyCorrectLights: true"
       vr-mode-ui="enabled: false"
-      device-orientation-permission-ui="enabled: false"
-    >
+      device-orientation-permission-ui="enabled: false">
 
       <a-assets>
-        <img id="productInfo" src="product-info.png" />
+        <img id="productInfo" src="product-info.jpg" />
         <a-asset-item id="salmonModel" src="salmon.glb"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <a-light type="ambient" intensity="1.5"></a-light>
+      <a-light type="ambient" intensity="1"></a-light>
       <a-light type="directional" position="0 2 2" intensity="0.8"></a-light>
 
-      <a-entity mindar-image-target="targetIndex: 0">
-
+      <a-entity id="target-anchor" mindar-image-target="targetIndex: 0">
+        
         <a-plane
           src="#productInfo"
-          position="0 0 0"
-          rotation="0 0 0"
-          width="1"
-          height="0.7"
+          position="0 0.2 0" 
+          width="1.2"
+          height="0.8"
           material="transparent: true; alphaTest: 0.5"
         ></a-plane>
 
         <a-gltf-model
           src="#salmonModel"
-          position="0 -0.4 0.1" 
-          rotation="0 0 0"
-          scale="0.5 0.5 0.5"
+          position="0 -0.2 0.2" 
+          rotation="90 0 0"
+          scale="0.6 0.6 0.6"
+          animation="property: rotation; to: 90 360 0; dur: 8000; easing: linear; loop: true"
         ></a-gltf-model>
 
       </a-entity>
     </a-scene>
+
+    <script>
+      const sceneEl = document.querySelector('a-scene');
+      const overlay = document.querySelector('#scanning-overlay');
+
+      // Hilangkan overlay saat poster terdeteksi (Target Found)
+      sceneEl.addEventListener("targetFound", () => {
+        overlay.classList.add("hidden");
+        console.log("Poster terdeteksi!");
+      });
+
+      // Munculkan kembali overlay saat kamera menjauh dari poster (Target Lost)
+      sceneEl.addEventListener("targetLost", () => {
+        overlay.classList.remove("hidden");
+        console.log("Poster hilang!");
+      });
+    </script>
   </body>
 </html>
-
