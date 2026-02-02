@@ -26,7 +26,7 @@
     </style>
   </head>
 
-  <body>
+ <body>
     <a-scene
       mindar-image="imageTargetSrc: targets.mind; stabilizationThreshold: 0.02;"
       embedded
@@ -35,36 +35,36 @@
       device-orientation-permission-ui="enabled: false"
     >
 
-      <!-- ASSETS -->
       <a-assets>
         <img id="productInfo" src="product-info.png" />
         <a-asset-item id="salmonModel" src="salmon.glb"></a-asset-item>
       </a-assets>
 
-      <!-- CAMERA -->
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <!-- IMAGE TARGET -->
+      <a-light type="ambient" intensity="1.5"></a-light>
+      <a-light type="directional" position="0 2 2" intensity="0.8"></a-light>
+
       <a-entity mindar-image-target="targetIndex: 0">
 
-        <!-- PRODUCT INFO IMAGE -->
         <a-plane
           src="#productInfo"
           position="0 0 0"
-          rotation="-90 0 0"
+          rotation="0 0 0"
           width="1"
           height="0.7"
+          material="transparent: true; alphaTest: 0.5"
         ></a-plane>
 
-        <!-- SALMON 3D MODEL -->
         <a-gltf-model
           src="#salmonModel"
-          position="0.25 -0.35 0.02"
-          rotation="-90 0 0"
-          scale="2.8 2.8 2.8"
+          position="0 -0.4 0.1" 
+          rotation="0 0 0"
+          scale="0.5 0.5 0.5"
         ></a-gltf-model>
 
       </a-entity>
     </a-scene>
   </body>
 </html>
+
