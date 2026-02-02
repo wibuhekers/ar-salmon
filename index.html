@@ -7,12 +7,31 @@
   <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
 
-  <!-- MindAR -->
+  <!-- MindAR Image Tracking -->
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
-    body { margin: 0; overflow: hidden; }
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+    }
   </style>
+
+  <!-- FREEZE COMPONENT (ANTI GOYANG) -->
+  <script>
+    AFRAME.registerComponent("freeze-on-detect", {
+      init() {
+        this.el.addEventListener("targetFound", () => {
+          this.el.object3D.matrixAutoUpdate = false;
+        });
+        this.el.addEventListener("targetLost", () => {
+          this.el.object3D.matrixAutoUpdate = true;
+        });
+      }
+    });
+  </script>
+
 </head>
 
 <body>
@@ -23,24 +42,28 @@
   vr-mode-ui="enabled: false"
   device-orientation-permission-ui="enabled: true">
 
-  <!-- Assets -->
+  <!-- ASSETS -->
   <a-assets>
     <img id="productInfo" src="product-info.png">
   </a-assets>
 
-  <!-- Camera -->
-  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+  <!-- CAMERA -->
+  <a-camera
+    position="0 0 0"
+    look-controls="enabled: false">
+  </a-camera>
 
-  <!-- TARGET -->
-  <a-entity mindar-image-target="targetIndex: 0">
+  <!-- IMAGE TARGET -->
+  <a-entity
+    mindar-image-target="targetIndex: 0"
+    freeze-on-detect>
 
-    <!-- IMAGE OVERLAY -->
+    <!-- PRODUCT INFO IMAGE -->
     <a-plane
       src="#productInfo"
-      position="0 0 0"
+      position="0 -0.15 0.01"
       width="1"
       height="0.7"
-      rotation="0 0 0"
       material="transparent: true">
     </a-plane>
 
