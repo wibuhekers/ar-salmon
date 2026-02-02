@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>AR Salmon Knowledge</title>
+  <title>AR Salmon</title>
 
   <!-- A-Frame -->
   <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
@@ -11,22 +11,20 @@
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
   <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: #000;
-    }
+    body { margin: 0; overflow: hidden; background: #000; }
   </style>
 
-  <!-- FREEZE POSITION (ANTI GOYANG) -->
+  <!-- FREEZE AFTER MODEL LOADED -->
   <script>
-    AFRAME.registerComponent("freeze-on-detect", {
+    AFRAME.registerComponent("freeze-after-load", {
       init() {
-        this.el.addEventListener("targetFound", () => {
-          this.el.object3D.matrixAutoUpdate = false;
+        const el = this.el;
+        el.addEventListener("model-loaded", () => {
+          const parent = el.parentEl;
+          parent.object3D.matrixAutoUpdate = false;
         });
-        this.el.addEventListener("targetLost", () => {
-          this.el.object3D.matrixAutoUpdate = true;
+        el.addEventListener("model-error", (e) => {
+          console.error("MODEL ERROR:", e);
         });
       }
     });
@@ -36,41 +34,6 @@
 <body>
 <a-scene
   mindar-image="imageTargetSrc: targets.mind; autoStart: true;"
-  renderer="colorManagement: true, physicallyCorrectLights"
+  renderer="colorManagement: true"
   vr-mode-ui="enabled: false"
-  device-orientation-permission-ui="enabled: true">
-
-  <!-- ASSETS -->
-  <a-assets>
-    <img id="productInfo" src="product-info.png">
-    <a-asset-item id="salmonModel" src="salmon.glb"></a-asset-item>
-  </a-assets>
-
-  <!-- CAMERA -->
-  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
-  <!-- IMAGE TARGET -->
-  <a-entity mindar-image-target="targetIndex: 0" freeze-on-detect>
-
-    <!-- 3D SALMON MODEL -->
-    <a-entity
-      gltf-model="#salmonModel"
-      position="0 0.05 0"
-      rotation="0 180 0"
-      scale="0.15 0.15 0.15">
-    </a-entity>
-
-    <!-- PRODUCT INFO IMAGE -->
-    <a-plane
-      src="#productInfo"
-      position="0 -0.18 0.01"
-      width="1"
-      height="0.7"
-      material="transparent: true">
-    </a-plane>
-
-  </a-entity>
-
-</a-scene>
-</body>
-</html>
+  device-orientation-permission-ui="enab
